@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Welcome to Shared Calculator</title>
+    <style>
+      * { margin: 18; 
+          padding: 18; 
+          box-sizing: border-box; 
+        }
+      body { font: 13px Helvetica, Arial; }
+      .title{ 
+         margin-top: 2px;
+         margin-bottom: 12px; 
+         text-align:center; 
+         width: 100%; 
+         font-size: 36px;
+         color: rgb(25, 23, 63); 
+      } 
+      .sharedText {
+        margin-top: 6%;
+        margin-bottom: 10px; 
+        text-align:center; 
+        width: 100%; 
+        font-size: 18px;
+        color: rgb(59, 43, 43);
+      }
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; ;}
+      #messages li:nth-child(odd) { background: rgb(211, 211, 240); }
+
+      .calc{
+        margin-left:auto;
+        margin-right:auto;
+        margin-top: 1%;
+      }
+  
+      input[type="button"] 
+      { 
+        background-color:rgb(165, 128, 128); 
+        color: black; 
+        font-size: 36px; 
+        width: 50px;
+        height: 50px; 
+      } 
+  
+      input[type="text"] 
+      { 
+        background-color:rgb(180, 190, 233); 
+        border: solid black 2px; 
+        font-size: 36px;
+        height: 50px;
+        width:100% 
+      }
+    </style>
+  </head>
+  <body>
+    <div class = "title" >
+      Welcome to Shared Calculator
+    </div> 
+    <table class="calc"> 
+      <tr> 
+        <td colspan="3"><input type="text" id="result"/></td> 
+        <!-- clr() function will call clr to clear all value -->
+        <td><input type="button" value="c" onclick="clr()"/> </td> 
+      </tr> 
+      <tr> 
+        <!--  To create button and assign value to each button -->
+        <!-- Here, dis("1") will call function 'dis' to display value -->
+        <td><input type="button" value="1" onclick="dis('1')"/> </td> 
+        <td><input type="button" value="2" onclick="dis('2')"/> </td> 
+        <td><input type="button" value="3" onclick="dis('3')"/> </td> 
+        <td><input type="button" value="/" onclick="dis(' / ')"/> </td> 
+      </tr> 
+      <tr> 
+        <td><input type="button" value="4" onclick="dis('4')"/> </td> 
+        <td><input type="button" value="5" onclick="dis('5')"/> </td> 
+        <td><input type="button" value="6" onclick="dis('6')"/> </td> 
+        <td><input type="button" value="-" onclick="dis(' - ')"/> </td> 
+      </tr> 
+      <tr> 
+        <td><input type="button" value="7" onclick="dis('7')"/> </td> 
+        <td><input type="button" value="8" onclick="dis('8')"/> </td> 
+        <td><input type="button" value="9" onclick="dis('9')"/> </td> 
+        <td><input type="button" value="+" onclick="dis(' + ')"/> </td> 
+      </tr> 
+      <tr> 
+        <td><input type="button" value="." onclick="dis('.')"/> </td> 
+        <td><input type="button" value="0" onclick="dis('0')"/> </td> 
+        <td><input type="button" value="=" id="solve"/> </td> 
+        <td><input type="button" value="*" onclick="dis(' * ')"/> </td> 
+      </tr> 
+    </table>
+    <div class = "sharedText">
+      <ol id="messages"></ol>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+      $(function () {
+        var socket = io();
+        $("#solve").click(function(){
+          var x = document.getElementById("result").value;
+          if(x!= ""){
+            var y = eval(x)
+            var data = String(x) + " = " + String(y);
+            socket.emit('message to server', data);
+            document.getElementById("result").value = "";
+          }
+          return false;
+        });
+        socket.on('message to client', function(msg){
+          output = ""
+          for (var i=msg.length - 1; i>=0; i--){
+            output += "<li>" + msg[i] + "</li>" // "<li>4 - 6 = -2</li> <li>8 * 5 = 40</li>""
+          }
+          $("#messages").empty()
+          if (output != ""){
+          $('#messages').prepend($(output));
+          }
+          var list = document.getElementById("messages");
+          while(list.children.length > 10){
+            list.removeChild(list.childNodes[10]);
+          }
+        });
+      });
+    </script>
+    <script> 
+
+      //function to display value 
+      function dis(val) 
+      { 
+          document.getElementById("result").value+=val 
+      }
+
+
+      //function t0 clear the display 
+      function clr() 
+      { 
+          document.getElementById("result").value = "" 
+      } 
+    </script>
+  </body>
+</html>

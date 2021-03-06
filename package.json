@@ -1,0 +1,19 @@
+{
+  "name": "shared_calculator",
+  "version": "1.0.0",
+  "description": "A calculator, The performed calculations can be shared with other online users",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon server"
+  },
+  "author": "Sri Anumakonda",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.4.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
