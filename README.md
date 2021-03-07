@@ -1,5 +1,5 @@
 # Shared_Calculator
-The Shared calculator where connected users can see their work simultaneously.
+A web app , which logs calculations as they happen and shares those calculations with everyone connected to the app.
 
 
 Enter "npm i" in terminal
