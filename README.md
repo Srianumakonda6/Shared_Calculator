@@ -3,7 +3,7 @@ A web app , which logs calculations as they happen and shares those calculations
 
 
 Enter "npm i" in terminal
-Start the "server node server"
+Start the server "node server"
 output is seen through "localhost:3000" in your web browser.
 
 
